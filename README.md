@@ -6,6 +6,7 @@
 - ```git branch develop/${your-name}```
 - ```git checkout develop/${your-name}```
 - ```python -m venv .venv```
+- ```.venv\Scripts\activate```
 - ```pip install -r requrierments.txt```
 
 # 실행
@@ -15,5 +16,5 @@
 # 업로드
 
 - ```git add .```
-- ```commit -m "바뀐 점"```
-- ```push origin develop/${your-name}```
+- ```git commit -m "바뀐 점"```
+- ```git push origin develop/${your-name}```
