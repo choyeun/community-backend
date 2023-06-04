@@ -13,6 +13,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -20,9 +21,11 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
+
 class UserCreate(BaseModel):
     username: str
     password: str
+
 
 class Post(Base):
     __tablename__ = "posts"
@@ -32,11 +35,14 @@ class Post(Base):
     content = Column(Text)
     author_id = Column(Integer)
 
+
 Base.metadata.create_all(bind=engine)
+
 
 def clear_database():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
+
 
 def get_db():
     db = SessionLocal()
@@ -44,6 +50,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 @app.post("/signup")
 def signup(user: UserCreate):
@@ -59,6 +66,7 @@ def signup(user: UserCreate):
 
     return {"success": True, "message": "회원 가입이 완료되었습니다."}
 
+
 @app.post("/signin")
 def signin(user: UserCreate):
     session = SessionLocal()
@@ -71,6 +79,7 @@ def signin(user: UserCreate):
         return {"success": False, "message": "잘못된 비밀번호입니다."}
 
     return {"success": True, "message": "로그인 성공"}
+
 
 def get_current_user(username: str, password: str, db: SessionLocal = Depends(get_db)):
     user = db.query(User).filter_by(username=username).first()
@@ -98,7 +107,12 @@ def create_post(post: PostCreate, user: User = Depends(get_current_user)):
     session.add(new_post)
     session.commit()
 
-    return {"message": "게시글이 생성되었습니다."}
+    return {
+        "message": "게시글이 생성되었습니다.",
+        "title": new_post.title,
+        "content": new_post.content,
+        "post_id": new_post.id,
+    }
 
 
 @app.put("/posts/{post_id}")
@@ -142,4 +156,3 @@ def get_post(post_id: int, db: SessionLocal = Depends(get_db)):
     if not post:
         raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")
     return post
-
