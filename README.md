@@ -13,5 +13,5 @@
 # 업로드
 
 - ```git add .```
-- ```commit -m "변경사양"```
+- ```commit -m "바뀐 점"```
 - ```push origin develop/your-name```
