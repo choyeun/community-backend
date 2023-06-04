@@ -10,10 +10,8 @@ app = FastAPI()
 SQLALCHEMY_DATABASE_URL = "sqlite:///./users.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 Base = declarative_base()
-
-
-
 
 class User(Base):
     __tablename__ = "users"
@@ -22,11 +20,9 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
-
 class UserCreate(BaseModel):
     username: str
     password: str
-
 
 class Post(Base):
     __tablename__ = "posts"
@@ -36,9 +32,7 @@ class Post(Base):
     content = Column(Text)
     author_id = Column(Integer)
 
-
 Base.metadata.create_all(bind=engine)
-
 
 def clear_database():
     Base.metadata.drop_all(bind=engine)
@@ -50,7 +44,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 
 @app.post("/signup")
 def signup(user: UserCreate):
@@ -65,7 +58,6 @@ def signup(user: UserCreate):
     session.commit()
 
     return {"success": True, "message": "회원 가입이 완료되었습니다."}
-
 
 @app.post("/signin")
 def signin(user: UserCreate):
@@ -142,3 +134,12 @@ def delete_post(post_id: int, user: User = Depends(get_current_user)):
     session.commit()
 
     return {"message": "게시글이 삭제되었습니다."}
+
+
+@app.get("/posts/{post_id}")
+def get_post(post_id: int, db: SessionLocal = Depends(get_db)):
+    post = db.query(Post).filter_by(id=post_id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다.")
+    return post
+
