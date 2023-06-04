@@ -1,17 +1,17 @@
 
 # 설치
 
-- ```bash git clone https://github.com/choyeun/community-backend.git```
-- ```bash git checkout develop/your-name```
-- ```bash python -m venv .venv```
-- ```bash pip install -r requrierments.txt```
+- ```git clone https://github.com/choyeun/community-backend.git```
+- ```git checkout develop/your-name```
+- ```python -m venv .venv```
+- ```pip install -r requrierments.txt```
 
 # 실행
 
-- ```bash uvicorn main:app --reload```
+- ```uvicorn main:app --reload```
 
 # 업로드
 
-- ```bash git add .```
-- ```bash commit -m "변경사양"```
-- ```bash push origin develop/your-name```
+- ```git add .```
+- ```commit -m "변경사양"```
+- ```push origin develop/your-name```
