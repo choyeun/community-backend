@@ -18,4 +18,4 @@ jobs:
 
     - name: SSH into remote server and pull
       run: |
-        sshpass -p "${{ secrets.SSH_PW }}" ssh -o StrictHostKeyChecking=no test@choyeun.kro.kr "git pull"
+        sshpass -p "${{ secrets.SSH_PW }}" ssh -o StrictHostKeyChecking=no test@choyeun.kro.kr "cd community-backend && git pull"
