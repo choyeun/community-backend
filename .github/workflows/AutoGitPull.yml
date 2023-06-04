@@ -1,0 +1,21 @@
+name: Auto Git Pull
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+
+    - name: SSH into remote server and pull
+      run: |
+        sshpass -p "${{ secrets.SSH_PW }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_ID }}"git pull"
